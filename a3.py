@@ -4,7 +4,7 @@
 
 # Replace the following placeholders with your information.
 
-# NAME
+# Bryce Wong
 # EMAIL
 # STUDENT ID
 

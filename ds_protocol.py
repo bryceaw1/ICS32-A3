@@ -9,11 +9,11 @@
 # STUDENT ID
 
 import json
+import time
 from collections import namedtuple
-
-# Namedtuple to hold the values retrieved from json messages.
-# TODO: update this named tuple to use DSP protocol keys
+timestamp = str(time.time())
 DataTuple = namedtuple('DataTuple', ['foo','baz'])
+
 
 def extract_json(json_msg:str) -> DataTuple:
   '''
@@ -29,3 +29,37 @@ def extract_json(json_msg:str) -> DataTuple:
     print("Json cannot be decoded.")
 
   return DataTuple(foo, baz)
+
+
+def format_for_json(action_type, username, password, user_token=None, message=None, bio=None):
+  formated = None
+  if action_type == "join":
+    formated = json.dumps({
+      "join": {
+        "username": username,
+        "password": password,
+        "tokens": user_token
+      }
+    })
+  elif action_type == 'post':
+        if not user_token:
+            raise ValueError("no user token breh go get that shi")
+        formated = ({
+            "token": user_token,
+            "post": {
+                "entry": message,
+                "timestamp": timestamp
+            }
+        })
+  elif action_type == 'bio':
+        if not user_token:
+            raise ValueError("go get it bruh bruh")
+        formated = json.dumps({
+            "token": user_token,
+            "bio": {
+                "entry": bio,
+                "timestamp": timestamp
+            }
+        })
+
+  return formated
